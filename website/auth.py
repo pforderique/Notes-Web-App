@@ -7,9 +7,22 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
-    # request has ALL the information the return
-    data = request.form 
-    print(data)
+    if request.method == "POST":
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        user = User.query.filter_by(email=email).first()
+        # if we find a user with that email
+        if user:
+            # if the password typed matches the user's password
+            if check_password_hash(user.password, password):
+                flash('Logged in successfully', category='success')
+                return redirect(url_for('views.home'))
+            else:
+                flash('Incorrect password. Try again.')
+        else:
+            flash('Email does not exist.', category='error')
+
     # we can add ANY argument we want. Example: text=... ANYTHING
     return render_template(
         "login.html", 
@@ -29,26 +42,18 @@ def sign_up():
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
 
-        if len(email) < 4:
-            flash(
-                'Email must be greater than 4 characters.',
-                category='error',
-            )
+        user = User.query.filter_by(email=email).first()
+
+        if user:
+            flash('Email already exists.', category='error')
+        elif len(email) < 4:
+            flash('Email must be greater than 4 characters.', category='error')
         elif len(first_name) < 2:
-            flash(
-                'First name must be greater than 1 character.',
-                category='error',
-            )
+            flash('First name must be greater than 1 character.', category='error')
         elif password1 != password2:
-            flash(
-                'Passwords dont\'t match.',
-                category='error',
-            )
+            flash('Passwords dont\'t match.', category='error')
         elif len(password1) < 7:
-            flash(
-                'Password should be at least 7 characters.',
-                category='error',
-            )
+            flash('Password should be at least 7 characters.', category='error')
         else:
             # create new user 
             new_user = User(email=email, first_name=first_name, password=generate_password_hash(password1, 'sha256'))
