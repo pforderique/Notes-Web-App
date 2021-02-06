@@ -22,6 +22,13 @@ def home():
 
     return render_template("home.html", user=current_user)
 
+@views.route('/global', methods=["GET", "POST"])
+def globalNotes():
+    # if something was posted to global, then user had to be signed in
+    if request.method == "POST":
+        pass
+    return render_template("global.html", user=current_user)
+
 @views.route('/delete-note', methods=["POST"])
 def delete_note():
     note = json.loads(request.data)

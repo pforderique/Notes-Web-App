@@ -1,0 +1,38 @@
+{% extends "base.html" %} 
+
+{% block title %}Global{% endblock %} 
+
+<!----------- CONTENT ----------->
+{% block content %} 
+    <br /> <h1 align="center">Global Notes</h1> <br />
+    <!-- <ul class="list-group list-group-flush" id="notes">
+        {% for note in user.notes %}
+            <li class="list-group-item">
+                {{note.data}}
+                <button type="button" class="close" onclick="deleteNote({{ note.id }})">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </li>
+        {% endfor %}  
+    </ul> -->
+    
+    <!-- only allow user to post to global if they are signed in -->
+    {% if user.is_authenticated %}
+        <form method="POST">
+            <textarea name="note" id="note" class="form-control"></textarea>
+            <br />
+            <div align="center">
+                <button type="submit" class="btn btn-primary">Add Note to Global</button>
+            </div>
+        </form>
+    {% else %}
+        <p 
+            class="lead text-center"
+            style="background-color:powderblue; " 
+        >
+            <a href="{{url_for('auth.login')}}"> Log in </a>
+            to post globally.
+        </p>
+    {% endif %}
+
+{% endblock %}
