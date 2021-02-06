@@ -4,16 +4,15 @@
 <!----------- CONTENT ----------->
 {% block content %} 
     <br /> <h1 align="center">Global Notes</h1> <br />
-    <!-- <ul class="list-group list-group-flush" id="notes">
-        {% for note in user.notes %}
+
+    <!-- Show a list of current global posts! -->
+    <ul class="list-group list-group-flush" id="notes">
+        {% for gnote in gnotes %}
             <li class="list-group-item">
-                {{note.data}}
-                <button type="button" class="close" onclick="deleteNote({{ note.id }})">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                User {{gnote.user_id}} : {{gnote.data}}
             </li>
         {% endfor %}  
-    </ul> -->
+    </ul>
     
     <!-- only allow user to post to global if they are signed in -->
     {% if user.is_authenticated %}

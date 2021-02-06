@@ -35,7 +35,11 @@ def globalNotes():
             db.session.add(new_gnote)
             db.session.commit()
             flash('Global Note Added!', category='success')
-    return render_template("global.html", user=current_user)
+
+    # Nonetheless, get a list of global notes to show any user
+    globalnotes = GlobalNote.query.order_by(GlobalNote.date.desc()).limit(MAX_GLOBAL_NOTES).all()
+
+    return render_template("global.html", gnotes=globalnotes, user=current_user)
 
 @views.route('/delete-note', methods=["POST"])
 def delete_note():
