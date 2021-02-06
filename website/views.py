@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, jsonify
+from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from flask_login import login_required, current_user
 from .models import Note, GlobalNote
 from . import db, MAX_GLOBAL_NOTES
@@ -24,6 +24,9 @@ def home():
 
 @views.route('/global', methods=["GET", "POST"])
 def globalNotes():
+    # Nonetheless, get a list of global notes to show any user
+    globalnotes = GlobalNote.query.order_by(GlobalNote.date.desc()).limit(MAX_GLOBAL_NOTES).all()
+
     # if something was posted to global, then user had to be signed in
     if request.method == "POST":
         globalnote = request.form.get('globalnote')
@@ -35,9 +38,7 @@ def globalNotes():
             db.session.add(new_gnote)
             db.session.commit()
             flash('Global Note Added!', category='success')
-
-    # Nonetheless, get a list of global notes to show any user
-    globalnotes = GlobalNote.query.order_by(GlobalNote.date.desc()).limit(MAX_GLOBAL_NOTES).all()
+            return redirect(url_for('views.globalNotes', gnotes=globalnotes, user=current_user))
 
     return render_template("global.html", gnotes=globalnotes, user=current_user)
 
