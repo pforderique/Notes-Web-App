@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, jsonify
 from flask_login import login_required, current_user
-from .models import Note
-from . import db
+from .models import Note, GlobalNote
+from . import db, MAX_GLOBAL_NOTES
 import json
 
 views = Blueprint('views', __name__)
@@ -26,7 +26,15 @@ def home():
 def globalNotes():
     # if something was posted to global, then user had to be signed in
     if request.method == "POST":
-        pass
+        globalnote = request.form.get('globalnote')
+
+        if len(globalnote) < 1: 
+            flash('Note too short!', category='error')
+        else:
+            new_gnote = GlobalNote(data=globalnote, user_id=current_user.id)
+            db.session.add(new_gnote)
+            db.session.commit()
+            flash('Global Note Added!', category='success')
     return render_template("global.html", user=current_user)
 
 @views.route('/delete-note', methods=["POST"])

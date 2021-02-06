@@ -1,5 +1,4 @@
 {% extends "base.html" %} 
-
 {% block title %}Global{% endblock %} 
 
 <!----------- CONTENT ----------->
@@ -19,7 +18,7 @@
     <!-- only allow user to post to global if they are signed in -->
     {% if user.is_authenticated %}
         <form method="POST">
-            <textarea name="note" id="note" class="form-control"></textarea>
+            <textarea name="globalnote" id="note" class="form-control"></textarea>
             <br />
             <div align="center">
                 <button type="submit" class="btn btn-primary">Add Note to Global</button>
