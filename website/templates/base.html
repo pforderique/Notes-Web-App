@@ -16,13 +16,14 @@
       href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="static/styles.css"> <!-- custom -->
 
     <title>{% block title %}Home{% endblock %}</title>
   </head>
   
-  <body>
+  <body style="background-color: #f5f0e1;">
     <!--bootstrap navbar. look at bootstrap website for more options------>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-trans-navy">
       <button
         class="navbar-toggler"
         type="button"
@@ -34,11 +35,13 @@
       <div class="collapse navbar-collapse" id="navbar">
         <div class="navbar-nav">
           {% if user.is_authenticated %}
+            <a class="nav-item nav-link" id="global" href="/global">Global</a>
             <a class="nav-item nav-link" id="home" href="/">Home</a>
             <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
           {% else %}
-            <a class="nav-item nav-link" id="login" href="/login">Login</a>
+            <a class="nav-item nav-link" id="global" href="/global">Global</a>
             <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
+            <a class="nav-item nav-link" id="login" href="/login">Login</a>
           {% endif %}
         </div>
       </div>
@@ -46,23 +49,23 @@
 
     <!----------- Flash messages ----------->
     {% with messages = get_flashed_messages(with_categories=true) %} 
-    {% if messages %} 
-      {% for category, message in messages %} 
-        {% if category == 'error' %}
-          <div class="alert alert-danger alter-dismissable fade show" role="alert">
-            {{ message }}
-            <button type="button" class="close" data-dismiss="alert">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-        {% else %}
-          <div class="alert alert-success alter-dismissable fade show" role="alert">
-            {{ message }}
-            <button type="button" class="close" data-dismiss="alert">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-    {% endif %} {% endfor %} {% endif %} {% endwith %}
+      {% if messages %} 
+        {% for category, message in messages %} 
+          {% if category == 'error' %}
+            <div class="alert alert-danger alter-dismissable fade show" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% else %}
+            <div class="alert alert-success alter-dismissable fade show" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+      {% endif %} {% endfor %} {% endif %} {% endwith %}
 
     <!----------- CONTENT ----------->
     <div class="container">

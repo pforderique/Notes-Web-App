@@ -7,6 +7,9 @@ from flask_login import LoginManager
 db = SQLAlchemy()
 DB_NAME = 'database.db'
 
+# set a maximum amount of global notes to load initially
+MAX_GLOBAL_NOTES = 10
+
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = MY_SECRET_KEY
@@ -19,7 +22,7 @@ def create_app():
     app.register_blueprint(views, url_prefix="/")
     app.register_blueprint(auth, url_prefix="/")
 
-    from .models import User, Note
+    from .models import User
 
     create_database(app)
 
